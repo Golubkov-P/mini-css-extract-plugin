@@ -266,12 +266,16 @@ class MiniCssExtractPlugin {
         const { outputOptions } = compilation;
         const { hashFunction, hashDigest, hashDigestLength } = outputOptions;
         const hash = createHash(hashFunction);
+        let hasCssModules = false;
 
         for (const m of chunk.modulesIterable) {
           if (m.type === MODULE_TYPE) {
+            hasCssModules = true;
             m.updateHash(hash);
           }
         }
+
+        if (!hasCssModules) return;
 
         const { contentHash } = chunk;
 
